@@ -14,26 +14,47 @@ struct ContentView: View {
         Home()
             .navigationTitle("Tic Tac Toe")
             .preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
+        
         }
     }
 }
+
 struct Home :  View {
+    
+    //for the number of moves
+    @State var moves : [String] = Array(repeating: "", count: 9)
+    //identifies the current player
+    @State var isPlaying = true
+    
+   
     var body: some View {
         VStack {
-            
-            
             
             LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing: 15), count: 3),spacing: 15) {
                 
                 ForEach(0..<9, id: \.self) {index in
                     
-                    Color.pink
-                        .frame(width: getWidth(), height: getWidth())
-                        .cornerRadius(30)
-               
+                    ZStack {
+                        Color.pink
+                        
+                        Text(moves[index])
+                            .font(.system(size: 55))
+                            .fontWeight(.heavy)
+                            .foregroundColor(.black)
+                            
+                    }
+                    .frame(width: getWidth(), height: getWidth())
+                    .cornerRadius(30)
+                    .onTapGesture(perform: {
+                        withAnimation(Animation.easeIn(duration: 0.5)) {
+                            
+                            moves[index] = isPlaying ? "🥶" : "🥵"
+                            isPlaying.toggle()
+                    
+                        }
+                    })
                 }
-            }
-           
+        }
             .padding(15)
             
         }
@@ -41,10 +62,6 @@ struct Home :  View {
     }
     
 
-    
-    
-    
-    
     //Used to calculate width.
     
     func getWidth() -> CGFloat {
